@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.example.application_relationship_management.Sevice.ApplicantService;
+import org.springframework.boot.autoconfigure.batch.BatchProperties;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,4 +38,14 @@ public class Applicant {
 //we did this because each applicant can have multiple application we want list to store that
 //    @JsonIgnore//here also added because loop condition occuring
     private List<Application>  applications=  new ArrayList<>();
+
+    @ManyToMany
+//make join table because in many to many we create another table to map many to many
+//means in many to many 2 table those are use to map many to many are also mapped in another table
+    @JoinTable(//create other taable that maps the both table
+            name = "applicants_jobs",
+            joinColumns = @JoinColumn(name = "applicantId"),
+            inverseJoinColumns = @JoinColumn(name = "jobId")
+    )
+    private List<Jobs> jobs =  new ArrayList<>();
 }
