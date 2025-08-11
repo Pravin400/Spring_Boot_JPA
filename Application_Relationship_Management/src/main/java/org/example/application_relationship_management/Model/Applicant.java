@@ -1,9 +1,14 @@
 package org.example.application_relationship_management.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.example.application_relationship_management.Sevice.ApplicantService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,4 +32,9 @@ public class Applicant {
 //    applicant -> resume -> applicant ->resume ->applicant -> ......................(infinite loop)
 //    this will happpen due to circular dependancy
     private Resume resume;
+
+    @OneToMany(mappedBy = "applicant",cascade = CascadeType.ALL)
+//we did this because each applicant can have multiple application we want list to store that
+//    @JsonIgnore//here also added because loop condition occuring
+    private List<Application>  applications=  new ArrayList<>();
 }

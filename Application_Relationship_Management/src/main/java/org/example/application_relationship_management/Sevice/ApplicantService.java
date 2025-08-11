@@ -5,6 +5,7 @@ import org.example.application_relationship_management.Dao.ApplicantDao;
 import org.example.application_relationship_management.Dao.ApplicantJpaDao;
 import org.example.application_relationship_management.Dao.ApplicantPaginationDao;
 import org.example.application_relationship_management.Model.Applicant;
+import org.example.application_relationship_management.Model.Application;
 import org.example.application_relationship_management.Model.Resume;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -28,8 +30,16 @@ public class ApplicantService {
     private ApplicantJpaDao applicantJpaDao;
     public Applicant postApplicant(@RequestBody Applicant applicant){
         Resume resume=applicant.getResume();
+        List<Application> application = applicant.getApplications();
         if(resume!=null){
             resume.setApplicant(applicant);
+        }
+        if(application!=null){
+            for(Application app:application){
+//now here set application to each of the applicant
+                app.setApplicant(applicant);
+            }
+
         }
         return applicantDao.save(applicant);
     }
